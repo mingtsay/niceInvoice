@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('Roboto_Mono/RobotoMono-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Noto Sans TC Regular';
+    src: url('Noto_Sans_TC/NotoSansTC-Regular.otf');
+}
+
+@font-face {
+    font-family: 'Noto Serif TC';
+    src: url('Noto_Serif_TC/NotoSerifTC-Regular.otf');
+}
+
+.root, .font-sans-serif {
+    -fx-font-family: 'Roboto', 'Noto Sans TC Regular', sans-serif;
+}
+
+.font-monospace {
+    -fx-font-family: 'Roboto Mono', 'Noto Serif TC', monospace;
+}

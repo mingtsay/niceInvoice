@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.iml" filepath="$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.test.iml" filepath="$PROJECT_DIR$/.idea/modules/tw.mingtsay.niceinvoice.test.iml" />
+    </modules>
+  </component>
+</project>

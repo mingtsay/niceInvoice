@@ -3,10 +3,13 @@ package tw.mingtsay.niceinvoice
 import com.beust.klaxon.Klaxon
 import javafx.application.Platform
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
 import javafx.scene.control.*
+import javafx.stage.Modality
+import javafx.stage.Stage
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import tw.mingtsay.niceinvoice.api.Invoice
+import tw.mingtsay.niceinvoice.model.Invoice
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -18,7 +21,7 @@ class MainController {
                 .build()
         ).execute().body()?.string()?.let { json -> Klaxon().parse<Invoice>(json) }
 
-    var invoice: Invoice? = null
+    private var invoice: Invoice? = null
 
     @FXML
     lateinit var menuBar: MenuBar
@@ -42,10 +45,19 @@ class MainController {
     lateinit var labelDate: Label
 
     @FXML
+    lateinit var txtInput: TextField
+
+    @FXML
     fun initialize() {
         menuBar.isUseSystemMenuBar = true
         invoice = fetchInvoice()
         initializeInvoice()
+    }
+
+    companion object {
+        val stage: Stage
+            get() = FXMLLoader.load<Stage>(this::class.java.getResource("/layouts/main.fxml"))
+                .apply { initModality(Modality.APPLICATION_MODAL) }
     }
 
     private fun initializeInvoice() {
@@ -76,7 +88,8 @@ class MainController {
                 labelSpecial.text = specialNumber
                 labelFirst.text = firstNumbers.joinToString("、")
                 labelAdditional.text = additionalNumbers.joinToString("、")
-                labelDate.text = String.format("自%s至%s止", date.dateFrom.format(formatter), date.dateTo.format(formatter))
+                labelDate.text =
+                    String.format("自%s至%s止", date.dateFrom.format(formatter), date.dateTo.format(formatter))
             }
         }
     }
@@ -84,6 +97,11 @@ class MainController {
     @FXML
     fun onMenuItemActionQuit() {
         Platform.exit()
+    }
+
+    @FXML
+    fun onMenuItemActionLicense() {
+        LicenseController.stage.showAndWait()
     }
 
     @FXML

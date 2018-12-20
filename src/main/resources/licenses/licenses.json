@@ -1,0 +1,99 @@
+{
+    "licenses": [
+        {
+            "name": "Noto Sans TC",
+            "category": "font",
+            "licenses": [
+                "/fonts/Noto_Sans_TC/OFL.txt"
+            ]
+        },
+        {
+            "name": "Noto Serif TC",
+            "category": "font",
+            "licenses": [
+                "/fonts/Noto_Serif_TC/OFL.txt"
+            ]
+        },
+        {
+            "name": "Roboto",
+            "category": "font",
+            "licenses": [
+                "/fonts/Roboto/LICENSE.txt"
+            ]
+        },
+        {
+            "name": "Roboto Mono",
+            "category": "font",
+            "licenses": [
+                "/fonts/Roboto_Mono/LICENSE.txt"
+            ]
+        },
+        {
+            "name": "okhttp",
+            "category": "library",
+            "licenses": [
+                "/licenses/com/squareup/okhttp3/okhttp/LICENSE.txt"
+            ]
+        },
+        {
+            "name": "Klaxon",
+            "category": "library",
+            "licenses": [
+                "/licenses/com/beust/klaxon/LICENSE.txt"
+            ]
+        },
+        {
+            "name": "JUnit",
+            "category": "library",
+            "licenses": [
+                "/licenses/junit/junit/LICENSE-junit.txt"
+            ]
+        },
+        {
+            "name": "Kotlin Programming Language",
+            "category": "framework",
+            "licenses": [
+                "/licenses/org/jetbrains/kotlin/license/LICENSE.txt",
+                "/licenses/org/jetbrains/kotlin/license/NOTICE.txt"
+            ]
+        },
+        {
+            "name": "Kotlin Compiler",
+            "category": "framework",
+            "licenses": [
+                "/licenses/org/jetbrains/kotlin/license/third_party/aosp_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/closure-compiler_LICENSE.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/guava_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/gwt_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/boost_LICENSE.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/asm_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/dart_LICENSE.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/pcollections_LICENSE.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/qunit_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/rhino_LICENSE.txt"
+            ]
+        },
+        {
+            "name": "Kotlin Test Data",
+            "category": "framework",
+            "licenses": [
+                "/licenses/org/jetbrains/kotlin/license/third_party/aosp_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/dagger_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/eclipse_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/findbugs_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/lombok_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/rxjava_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/spring_license.txt"
+            ]
+        },
+        {
+            "name": "Kotlin Tools and Libraries Tests",
+            "category": "framework",
+            "licenses": [
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/eclipse_distribution_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/eclipse_license.txt",
+                "/licenses/org/jetbrains/kotlin/license/third_party/testdata/gradle_license.txt"
+            ]
+        }
+    ]
+}

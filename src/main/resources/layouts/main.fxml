@@ -1,179 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tw.mingtsay.niceinvoice.MainController">
-    <children>
-        <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-            <menus>
-                <Menu mnemonicParsing="false" text="檔案">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionQuit" text="結束" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="編輯">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Undo" />
-                        <MenuItem mnemonicParsing="false" text="Redo" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Cut" />
-                        <MenuItem mnemonicParsing="false" text="Copy" />
-                        <MenuItem mnemonicParsing="false" text="Paste" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Select All" />
-                        <MenuItem mnemonicParsing="false" text="Unselect All" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="說明">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="關於" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-      <HBox VBox.vgrow="ALWAYS">
-         <children>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Scene?>
+<?import javafx.stage.Stage?>
+<Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
+       fx:controller="tw.mingtsay.niceinvoice.MainController"
+       width="1280" height="960" title="從來沒這麼輕鬆對發票過">
+    <scene>
+        <Scene stylesheets="@/fonts/font-face.css">
             <VBox>
-               <children>
-                  <HBox>
-                     <children>
-                        <ComboBox fx:id="listInvoice" onAction="#onInvoice">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin></ComboBox>
-                     </children>
-                  </HBox>
-                  <GridPane hgap="8.0" vgap="8.0">
-                     <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                        <RowConstraints valignment="TOP" />
-                     </rowConstraints>
-                     <children>
-                        <Label text="特別獎" />
-                        <VBox GridPane.columnIndex="1">
-                           <children>
-                              <Label fx:id="labelSuper" styleClass="font-monospace" text="載入中…" textFill="RED" />
-                              <Label text="八碼與特別獎號碼全部相同者獎金一千萬元" />
-                           </children>
-                        </VBox>
-                        <Label text="特獎" GridPane.rowIndex="1" />
-                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Label fx:id="labelSpecial" styleClass="font-monospace" text="載入中…" textFill="RED" />
-                              <Label text="八碼與特獎之號碼全部相同者獎金二百萬元" />
-                           </children>
-                        </VBox>
-                        <Label text="頭獎" GridPane.rowIndex="2" />
-                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label fx:id="labelFirst" styleClass="font-monospace" text="載入中…" textFill="RED" />
-                              <Label text="八碼與頭獎之號碼全部相同者獎金二十萬元" />
-                           </children>
-                        </VBox>
-                        <Label text="二獎" GridPane.rowIndex="3" />
-                        <Label text="末七碼與頭獎之末七位數相同者獎金四萬元" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="三獎" GridPane.rowIndex="4" />
-                        <Label text="末六碼與頭獎之末六位數相同者獎金一萬元" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="四獎" GridPane.rowIndex="5" />
-                        <Label text="末五碼與頭獎之末五位數相同者獎金四千元" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="五獎" GridPane.rowIndex="6" />
-                        <Label text="末四碼與頭獎之末四位數相同者獎金一千元" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label text="六獎" GridPane.rowIndex="7" />
-                        <Label text="末三碼與頭獎之末三位數相同者獎金二百元" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Label text="增開六獎" GridPane.rowIndex="8" />
-                        <VBox GridPane.columnIndex="1" GridPane.rowIndex="8">
-                           <children>
-                              <Label fx:id="labelAdditional" styleClass="font-monospace" text="載入中…" textFill="RED" />
-                              <Label text="末三碼與增開六獎三位數相同者獎金二百元" />
-                           </children>
-                        </VBox>
-                        <Label text="領獎期限" GridPane.rowIndex="9" />
-                        <Label fx:id="labelDate" styleClass="font-monospace" text="載入中…" textFill="BLUE" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </VBox.margin>
-                  </GridPane>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-               </HBox.margin>
+                <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+                    <Menu mnemonicParsing="false" text="檔案">
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionQuit" text="結束"/>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="編輯">
+                        <MenuItem mnemonicParsing="false" text="Undo"/>
+                        <MenuItem mnemonicParsing="false" text="Redo"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" text="Cut"/>
+                        <MenuItem mnemonicParsing="false" text="Copy"/>
+                        <MenuItem mnemonicParsing="false" text="Paste"/>
+                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem mnemonicParsing="false" text="Select All"/>
+                        <MenuItem mnemonicParsing="false" text="Unselect All"/>
+                    </Menu>
+                    <Menu mnemonicParsing="false" text="說明">
+                        <MenuItem mnemonicParsing="false" text="關於"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionLicense" text="版權宣告"/>
+                    </Menu>
+                </MenuBar>
+                <HBox VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                    </VBox.margin>
+                    <VBox>
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                        <HBox>
+                            <ComboBox fx:id="listInvoice" onAction="#onInvoice">
+                                <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                                </HBox.margin>
+                            </ComboBox>
+                        </HBox>
+                        <GridPane hgap="8.0" vgap="8.0">
+                            <columnConstraints>
+                                <ColumnConstraints/>
+                                <ColumnConstraints/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                                <RowConstraints valignment="TOP"/>
+                            </rowConstraints>
+                            <VBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </VBox.margin>
+                            <Label text="特別獎"/>
+                            <VBox GridPane.columnIndex="1">
+                                <Label fx:id="labelSuper" styleClass="font-monospace" text="載入中…" textFill="RED"/>
+                                <Label text="八碼與特別獎號碼全部相同者獎金一千萬元"/>
+                            </VBox>
+                            <Label text="特獎" GridPane.rowIndex="1"/>
+                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label fx:id="labelSpecial" styleClass="font-monospace" text="載入中…" textFill="RED"/>
+                                <Label text="八碼與特獎之號碼全部相同者獎金二百萬元"/>
+                            </VBox>
+                            <Label text="頭獎" GridPane.rowIndex="2"/>
+                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <Label fx:id="labelFirst" styleClass="font-monospace" text="載入中…" textFill="RED"/>
+                                <Label text="八碼與頭獎之號碼全部相同者獎金二十萬元"/>
+                            </VBox>
+                            <Label text="二獎" GridPane.rowIndex="3"/>
+                            <Label text="末七碼與頭獎之末七位數相同者獎金四萬元" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                            <Label text="三獎" GridPane.rowIndex="4"/>
+                            <Label text="末六碼與頭獎之末六位數相同者獎金一萬元" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                            <Label text="四獎" GridPane.rowIndex="5"/>
+                            <Label text="末五碼與頭獎之末五位數相同者獎金四千元" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                            <Label text="五獎" GridPane.rowIndex="6"/>
+                            <Label text="末四碼與頭獎之末四位數相同者獎金一千元" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                            <Label text="六獎" GridPane.rowIndex="7"/>
+                            <Label text="末三碼與頭獎之末三位數相同者獎金二百元" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                            <Label text="增開六獎" GridPane.rowIndex="8"/>
+                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                <Label fx:id="labelAdditional" styleClass="font-monospace" text="載入中…"
+                                       textFill="RED"/>
+                                <Label text="末三碼與增開六獎三位數相同者獎金二百元"/>
+                            </VBox>
+                            <Label text="領獎期限" GridPane.rowIndex="9"/>
+                            <Label fx:id="labelDate" styleClass="font-monospace" text="載入中…" textFill="BLUE"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+                        </GridPane>
+                    </VBox>
+                    <VBox>
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                        <HBox>
+                            <TextField fx:id="txtInput" alignment="CENTER" onAction="#onInput" promptText="輸入末三碼或完整號碼"
+                                       HBox.hgrow="ALWAYS">
+                                <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                                </HBox.margin>
+                            </TextField>
+                            <Button mnemonicParsing="false" onAction="#onInput" text="對獎">
+                                <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                                </HBox.margin>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                        </HBox.margin>
+                        <TableView VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn text="發票號碼"/>
+                                <TableColumn text="發票期別"/>
+                                <TableColumn text="對獎結果"/>
+                            </columns>
+                            <VBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </VBox.margin>
+                        </TableView>
+                        <Label text="Copyright © 2018 Ming Tsay. All rights reserved." textAlignment="RIGHT">
+                            <VBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </VBox.margin>
+                        </Label>
+                    </VBox>
+                </HBox>
             </VBox>
-            <VBox>
-               <children>
-                  <HBox>
-                     <children>
-                        <TextField fx:id="txtInput" alignment="CENTER" onAction="#onInput" promptText="輸入末三碼或完整號碼" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                        </TextField>
-                        <Button mnemonicParsing="false" onAction="#onInput" text="對獎">
-                           <HBox.margin>
-                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-               </HBox.margin>
-            </VBox>
-            <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-               <children>
-                  <TableView VBox.vgrow="ALWAYS">
-                    <columns>
-                      <TableColumn text="發票號碼" />
-                        <TableColumn text="發票期別" />
-                      <TableColumn text="對獎結果" />
-                    </columns>
-                     <VBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </VBox.margin>
-                  </TableView>
-                  <Label text="Copyright © 2018 Ming Tsay. All rights reserved." textAlignment="RIGHT">
-                     <VBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-               </HBox.margin>
-            </VBox>
-         </children>
-         <VBox.margin>
-            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
-         </VBox.margin>
-      </HBox>
-    </children>
-</VBox>
+        </Scene>
+    </scene>
+</Stage>

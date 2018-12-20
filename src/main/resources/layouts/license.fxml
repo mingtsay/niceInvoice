@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.Scene?>
+<?import javafx.stage.Stage?>
+<Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
+       fx:controller="tw.mingtsay.niceinvoice.LicenseController"
+       width="940" height="705" title="版權宣告">
+    <scene>
+        <Scene stylesheets="@/fonts/font-face.css">
+            <SplitPane dividerPositions="0.2">
+                <ListView fx:id="listLicense"/>
+                <TextArea styleClass="font-monospace" wrapText="true" editable="false" fx:id="textLicense"/>
+            </SplitPane>
+        </Scene>
+    </scene>
+</Stage>

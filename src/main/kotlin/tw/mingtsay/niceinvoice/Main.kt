@@ -29,3 +29,7 @@ class Main : Application() {
         val logger = Logger.getLogger(Main::class.java.name)!!
     }
 }
+
+fun main(args: Array<String>) {
+    Application.launch(Main::class.java, *args)
+}

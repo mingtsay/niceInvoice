@@ -12,8 +12,8 @@ internal class InvoiceNumberTest {
             title = "測試",
             superNumber = "12345678",
             specialNumber = "54321678",
-            firstNumbers = arrayOf("13579246", "13576622"),
-            additionalNumbers = arrayOf("226", "246", "666"),
+            firstNumbers = arrayListOf("13579246", "13576622"),
+            additionalNumbers = arrayListOf("226", "246", "666"),
             date = InvoiceDate(from = 0, to = 0, text = "")
         )
 

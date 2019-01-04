@@ -10,19 +10,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.chrono.MinguoDate
 
-private data class Invoice(val numbers: Array<InvoiceNumber>) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Invoice
-        return numbers.contentEquals(other.numbers)
-    }
-
-    override fun hashCode(): Int {
-        return numbers.contentHashCode()
-    }
-}
+private data class Invoice(val numbers: List<InvoiceNumber>)
 
 data class InvoiceNumber(
     val id: String,
@@ -32,23 +20,11 @@ data class InvoiceNumber(
     @Json(name = "special")
     val specialNumber: String,
     @Json(name = "first")
-    val firstNumbers: Array<String>,
+    val firstNumbers: List<String>,
     @Json(name = "additional")
-    val additionalNumbers: Array<String>,
+    val additionalNumbers: List<String>,
     val date: InvoiceDate
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as InvoiceNumber
-        return id == other.id
-    }
-
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
     fun compare(number: String): InvoiceResult {
         if (number.length == 8) {
             if (superNumber == number) return InvoiceResult.INVOICE_RESULT_SUPER
@@ -85,6 +61,7 @@ data class InvoiceDate(
     val from: Long,
     val to: Long
 ) {
+    @Json(ignored = true)
     val dateFrom: MinguoDate
         get() = MinguoDate.from(
             LocalDateTime.ofInstant(
@@ -92,6 +69,7 @@ data class InvoiceDate(
                 ZoneId.systemDefault()
             )
         )
+    @Json(ignored = true)
     val dateTo: MinguoDate
         get() = MinguoDate.from(
             LocalDateTime.ofInstant(
@@ -122,8 +100,12 @@ data class InvoiceInputResult(
     val invoiceTitle: String,
     val invoiceResult: InvoiceResult
 ) {
+    @Json(ignored = true)
     val numberProperty = SimpleStringProperty("X".repeat(8 - number.length) + number)
+    @Json(ignored = true)
     val invoiceTitleProperty = SimpleStringProperty(invoiceTitle)
+    @Json(ignored = true)
     val invoiceResultProperty = SimpleStringProperty(invoiceResult.text)
+    @Json(ignored = true)
     val invoicePriceProperty = SimpleStringProperty(invoiceResult.price.text)
 }

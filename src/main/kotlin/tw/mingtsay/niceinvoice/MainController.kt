@@ -16,10 +16,13 @@ import javafx.stage.Stage
 import tw.mingtsay.niceinvoice.model.InvoiceInputResult
 import tw.mingtsay.niceinvoice.model.InvoiceNumber
 import tw.mingtsay.niceinvoice.model.InvoiceResult
+import tw.mingtsay.niceinvoice.model.State
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainController {
+    private var selectedIndex = 0
+
     private var invoice = mutableListOf<InvoiceNumber>()
 
     private var results = FXCollections.observableArrayList<InvoiceInputResult>()
@@ -67,6 +70,10 @@ class MainController {
     fun initialize() {
         menuBar.isUseSystemMenuBar = true
 
+        selectedIndex = Main.state.selectedIndex
+        invoice = Main.state.invoice.toMutableList()
+        results = FXCollections.observableArrayList(Main.state.results)
+
         tableColumnNumber.setCellValueFactory { it.value.numberProperty }
         tableColumnDate.setCellValueFactory { it.value.invoiceTitleProperty }
         tableColumnResult.setCellValueFactory { it.value.invoiceResultProperty }
@@ -76,10 +83,22 @@ class MainController {
         initializeInvoice()
     }
 
+    fun shutdown() {
+        Main.state = State(
+            selectedIndex = listInvoice.selectionModel.selectedIndex,
+            invoice = invoice,
+            results = results
+        )
+    }
+
     companion object {
         val stage: Stage
-            get() = FXMLLoader.load<Stage>(this::class.java.getResource("/layouts/main.fxml"))
-                .apply { initModality(Modality.APPLICATION_MODAL) }
+            get() = FXMLLoader(this::class.java.getResource("/layouts/main.fxml"))
+                .let { loader ->
+                    loader.load<Stage>()
+                        .apply { initModality(Modality.APPLICATION_MODAL) }
+                        .apply { setOnHidden { loader.getController<MainController>().shutdown() } }
+                }
     }
 
     private fun initializeInvoice() {
@@ -96,9 +115,9 @@ class MainController {
 
         listInvoice.apply {
             invoice.forEach { items.add(it.title) }
-            selectionModel.select(0)
+            selectionModel.select(selectedIndex)
         }
-        applyInvoiceNumber(0)
+        applyInvoiceNumber(selectedIndex)
     }
 
     private fun applyInvoiceNumber(index: Int) {

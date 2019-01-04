@@ -8,15 +8,15 @@ import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
+import javafx.stage.FileChooser
 import javafx.stage.Modality
 import javafx.stage.Stage
-import tw.mingtsay.niceinvoice.model.InvoiceInputResult
-import tw.mingtsay.niceinvoice.model.InvoiceNumber
-import tw.mingtsay.niceinvoice.model.InvoiceResult
-import tw.mingtsay.niceinvoice.model.State
+import tw.mingtsay.niceinvoice.model.*
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Level
+import kotlin.math.exp
+import kotlin.math.min
 
 class MainController {
     private var selectedIndex = 0
@@ -24,6 +24,9 @@ class MainController {
     private var invoice = mutableListOf<InvoiceNumber>()
 
     private var results = FXCollections.observableArrayList<InvoiceInputResult>()
+
+    @FXML
+    lateinit var _stage: Stage
 
     @FXML
     lateinit var menuBar: MenuBar
@@ -124,7 +127,9 @@ class MainController {
 
         if (!invoice.isEmpty()) {
             listInvoice.apply {
+                listInvoice.items.clear()
                 invoice.forEach { items.add(it.title) }
+                selectedIndex = min(selectedIndex, listInvoice.items.size - 1)
                 selectionModel.select(selectedIndex)
             }
             applyInvoiceNumber(selectedIndex)
@@ -147,6 +152,79 @@ class MainController {
             Main.logger.log(Level.WARNING, "Invoice information size = ${invoice.size}, selecting index = $index")
         }
     }
+
+    private fun openFile(title: String) =
+        FileChooser()
+            .also { it.title = title }
+            .apply { extensionFilters.add(FileChooser.ExtensionFilter("JSON 檔案 (*.json)", "*.json")) }
+            .apply { extensionFilters.add(FileChooser.ExtensionFilter("所有檔案 (*.*)", "*.*")) }
+            .run { showOpenDialog(_stage) }
+
+    private fun saveFile(title: String) =
+        FileChooser()
+            .also { it.title = title }
+            .apply { extensionFilters.add(FileChooser.ExtensionFilter("JSON 檔案 (*.json)", "*.json")) }
+            .apply { initialFileName = "niceInvoice-export.json" }
+            .run { showSaveDialog(_stage) }
+
+    private fun confirmReplacement(what: String) =
+        Alert(Alert.AlertType.CONFIRMATION)
+            .apply { headerText = "是否取代原有資料？" }
+            .apply { contentText = "${what}已有資料，是否要取代原有資料？\n\n若您想要保留原有資料，並將匯入的${what}與該些資料合併，請點選否。" }
+            .run { showAndWait().get() == ButtonType.OK }
+
+    private fun importExportDone(isImport: Boolean, what: String) =
+        Alert(Alert.AlertType.INFORMATION)
+            .apply {
+                val importExport = if (isImport) "匯入" else "匯出"
+                headerText = "${importExport}成功"
+                contentText = "${what}已成功${importExport}！"
+            }
+            .run { showAndWait() }
+
+    @FXML
+    fun onMenuItemActionImport() {
+        val export = Export.read(openFile("匯入…"))
+        export?.invoice?.apply {
+            val replace = invoice.isEmpty() || confirmReplacement("發票資訊")
+            if (replace) invoice = toMutableList()
+            else invoice.addAll(this)
+            initializeInvoice()
+        }
+
+        export?.results?.apply {
+            val replace = results.isEmpty() || confirmReplacement("對獎結果")
+            if (replace) results.clear()
+            results.addAll(this)
+        }
+
+        importExportDone(what = "資料", isImport = true)
+    }
+
+    @FXML
+    fun onMenuItemActionExportInvoice() {
+        val file = saveFile("匯出發票資訊…")
+        Export.writeInvoice(file = file, invoice = invoice)
+
+        importExportDone(what = "發票資訊", isImport = false)
+    }
+
+    @FXML
+    fun onMenuItemActionExportResults() {
+        val file = saveFile("匯出對獎結果…")
+        Export.writeResults(file = file, results = results)
+
+        importExportDone(what = "對獎結果", isImport = false)
+    }
+
+    @FXML
+    fun onMenuItemActionExportAll() {
+        val file = saveFile("匯出全部…")
+        Export.writeAll(file = file, invoice = invoice, results = results)
+
+        importExportDone(what = "資料", isImport = false)
+    }
+
 
     @FXML
     fun onMenuItemActionQuit() {

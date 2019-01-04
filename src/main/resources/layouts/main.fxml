@@ -6,13 +6,20 @@
 <?import javafx.scene.Scene?>
 <?import javafx.stage.Stage?>
 <Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
-       fx:controller="tw.mingtsay.niceinvoice.MainController"
+       fx:controller="tw.mingtsay.niceinvoice.MainController" fx:id="_stage"
        width="800" height="600" title="從來沒這麼輕鬆對發票過">
     <scene>
         <Scene stylesheets="@/fonts/font-face.css">
             <VBox>
                 <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
                     <Menu mnemonicParsing="false" text="檔案">
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionImport" text="匯入…"/>
+                        <Menu mnemonicParsing="false" text="匯出…">
+                            <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionExportInvoice" text="匯出發票資訊…"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionExportResults" text="匯出對獎結果…"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionExportAll" text="匯出全部…"/>
+                        </Menu>
+                        <SeparatorMenuItem/>
                         <MenuItem mnemonicParsing="false" onAction="#onMenuItemActionQuit" text="結束"/>
                     </Menu>
                     <Menu mnemonicParsing="false" text="編輯">

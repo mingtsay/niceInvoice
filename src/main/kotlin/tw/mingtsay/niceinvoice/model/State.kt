@@ -2,8 +2,9 @@ package tw.mingtsay.niceinvoice.model
 
 import com.beust.klaxon.Klaxon
 import org.apache.commons.io.FileUtils
+import tw.mingtsay.niceinvoice.Main
 import java.io.File
-import java.io.FileNotFoundException
+import java.util.logging.Level
 
 data class State(
     val selectedIndex: Int = 0,
@@ -21,21 +22,26 @@ data class State(
 
         fun load(): State =
             try {
+                Main.logger.log(Level.INFO, "Loading state…")
                 Klaxon().parse<State>(File(STATE_FILE_FULL))
-            } catch (_: FileNotFoundException) {
-                null
-            } catch (_: NoSuchFieldException) {
+                    ?.apply { Main.logger.log(Level.INFO, "State loaded.") }
+            } catch (e: Exception) {
+                Main.logger.log(Level.WARNING, "Failed to load state.", e)
                 null
             } ?: State()
 
         fun save(state: State) {
-            File(STATE_FILE_PATH).apply {
-                if (!exists()) mkdirs()
-                if (isDirectory) FileUtils.writeStringToFile(
-                    File(STATE_FILE_FULL),
-                    Klaxon().toJsonString(state),
-                    "UTF-8"
-                )
+            try {
+                Main.logger.log(Level.INFO, "Saving state…")
+                File(STATE_FILE_PATH).apply {
+                    if (!exists() && !mkdirs())
+                        throw FileSystemException(reason = "Cannot create directories.", file = this)
+                    if (!isDirectory) throw FileAlreadyExistsException(reason = "Not a directory.", file = this)
+                    FileUtils.writeStringToFile(File(STATE_FILE_FULL), Klaxon().toJsonString(state), "UTF-8")
+                }
+                Main.logger.log(Level.INFO, "State saved.")
+            } catch (e: Exception) {
+                Main.logger.log(Level.WARNING, "Failed to save state.", e)
             }
         }
     }

@@ -5,10 +5,12 @@ import com.beust.klaxon.Klaxon
 import javafx.beans.property.SimpleStringProperty
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import tw.mingtsay.niceinvoice.Main
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.chrono.MinguoDate
+import java.util.logging.Level
 
 private data class Invoice(val numbers: List<InvoiceNumber>)
 
@@ -26,23 +28,40 @@ data class InvoiceNumber(
     val date: InvoiceDate
 ) {
     fun compare(number: String): InvoiceResult {
+        Main.logger.log(Level.INFO, "Compare number: \"$number\"")
+
         if (number.length == 8) {
+            Main.logger.log(Level.INFO, "Comparing super price number.")
             if (superNumber == number) return InvoiceResult.INVOICE_RESULT_SUPER
+            Main.logger.log(Level.INFO, "Comparing special price number.")
             if (specialNumber == number) return InvoiceResult.INVOICE_RESULT_SPECIAL
+            Main.logger.log(Level.INFO, "Comparing first price number.")
             if (firstNumbers.contains(number)) return InvoiceResult.INVOICE_RESULT_FIRST
+            Main.logger.log(Level.INFO, "Comparing second price number. (substring)")
             if (firstNumbers.any { it.substring(1..7) == number.substring(1..7) }) return InvoiceResult.INVOICE_RESULT_SECOND
+            Main.logger.log(Level.INFO, "Comparing third price number. (substring)")
             if (firstNumbers.any { it.substring(2..7) == number.substring(2..7) }) return InvoiceResult.INVOICE_RESULT_THIRD
+            Main.logger.log(Level.INFO, "Comparing fourth price number. (substring)")
             if (firstNumbers.any { it.substring(3..7) == number.substring(3..7) }) return InvoiceResult.INVOICE_RESULT_FOURTH
+            Main.logger.log(Level.INFO, "Comparing fifth price number. (substring)")
             if (firstNumbers.any { it.substring(4..7) == number.substring(4..7) }) return InvoiceResult.INVOICE_RESULT_FIFTH
+            Main.logger.log(Level.INFO, "Comparing sixth price number. (substring)")
             if (firstNumbers.any { it.substring(5..7) == number.substring(5..7) }) return InvoiceResult.INVOICE_RESULT_SIXTH
+            Main.logger.log(Level.INFO, "Comparing additional sixth price number. (substring)")
             if (additionalNumbers.contains(number.substring(5..7))) return InvoiceResult.INVOICE_RESULT_ADDITIONAL
         }
         if (number.length == 3) {
+            Main.logger.log(Level.INFO, "Comparing super price number. (endsWith)")
             if (superNumber.endsWith(number)) return InvoiceResult.INVOICE_RESULT_PERHAPS
+            Main.logger.log(Level.INFO, "Comparing special price number. (endsWith)")
             if (specialNumber.endsWith(number)) return InvoiceResult.INVOICE_RESULT_PERHAPS
+            Main.logger.log(Level.INFO, "Comparing first price number. (endsWith)")
             if (firstNumbers.any { it.endsWith(number) }) return InvoiceResult.INVOICE_RESULT_PERHAPS
+            Main.logger.log(Level.INFO, "Comparing additional sixth price number.")
             if (additionalNumbers.contains(number)) return InvoiceResult.INVOICE_RESULT_ADDITIONAL
         }
+
+        Main.logger.log(Level.INFO, "None matched.")
         return InvoiceResult.INVOICE_RESULT_NONE
     }
 

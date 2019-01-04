@@ -1,7 +1,6 @@
 package tw.mingtsay.niceinvoice
 
 import javafx.application.Platform
-import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -9,8 +8,6 @@ import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import javafx.stage.Modality
 import javafx.stage.Stage
 import tw.mingtsay.niceinvoice.model.InvoiceInputResult
@@ -19,6 +16,7 @@ import tw.mingtsay.niceinvoice.model.InvoiceResult
 import tw.mingtsay.niceinvoice.model.State
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.logging.Level
 
 class MainController {
     private var selectedIndex = 0
@@ -68,6 +66,8 @@ class MainController {
 
     @FXML
     fun initialize() {
+        Main.logger.log(Level.INFO, "Initializing…")
+
         menuBar.isUseSystemMenuBar = true
 
         selectedIndex = Main.state.selectedIndex
@@ -81,9 +81,13 @@ class MainController {
         tableResults.items = results
 
         initializeInvoice()
+
+        Main.logger.log(Level.INFO, "Initialized.")
     }
 
     fun shutdown() {
+        Main.logger.log(Level.INFO, "Shutting down…")
+
         Main.state = State(
             selectedIndex = listInvoice.selectionModel.selectedIndex,
             invoice = invoice,
@@ -94,18 +98,23 @@ class MainController {
     companion object {
         val stage: Stage
             get() = FXMLLoader(this::class.java.getResource("/layouts/main.fxml"))
+                .apply { Main.logger.log(Level.INFO, "Loading layout…") }
                 .let { loader ->
                     loader.load<Stage>()
                         .apply { initModality(Modality.APPLICATION_MODAL) }
                         .apply { setOnHidden { loader.getController<MainController>().shutdown() } }
+                        .apply { Main.logger.log(Level.INFO, "Layout loaded.") }
                 }
     }
 
     private fun initializeInvoice() {
         if (invoice.isEmpty()) {
+            Main.logger.log(Level.INFO, "No invoice information found. Download from server.")
             InvoiceNumber.fetch()
                 ?.apply { invoice = toMutableList() }
+                ?.apply { Main.logger.log(Level.INFO, "Invoice information has been downloaded successfully.") }
                 ?: Alert(Alert.AlertType.INFORMATION).apply {
+                    Main.logger.log(Level.WARNING, "Failed to download invoice information.")
                     headerText = "發票開獎資訊下載失敗"
                     dialogPane.content = Label("無法取得發票開獎資訊，請檢查您的網際網路連線。")
                     showAndWait()
@@ -113,23 +122,29 @@ class MainController {
                 }
         }
 
-        listInvoice.apply {
-            invoice.forEach { items.add(it.title) }
-            selectionModel.select(selectedIndex)
+        if (!invoice.isEmpty()) {
+            listInvoice.apply {
+                invoice.forEach { items.add(it.title) }
+                selectionModel.select(selectedIndex)
+            }
+            applyInvoiceNumber(selectedIndex)
         }
-        applyInvoiceNumber(selectedIndex)
     }
 
     private fun applyInvoiceNumber(index: Int) {
-        invoice[index].apply {
-            val formatter = DateTimeFormatter.ofPattern("Gyyy/M/d", Locale.TAIWAN)
+        try {
+            invoice[index].apply {
+                val formatter = DateTimeFormatter.ofPattern("Gyyy/M/d", Locale.TAIWAN)
 
-            labelSuper.text = superNumber
-            labelSpecial.text = specialNumber
-            labelFirst.text = firstNumbers.joinToString("、")
-            labelAdditional.text = additionalNumbers.joinToString("、")
-            labelDate.text =
-                String.format("自%s至%s止", date.dateFrom.format(formatter), date.dateTo.format(formatter))
+                labelSuper.text = superNumber
+                labelSpecial.text = specialNumber
+                labelFirst.text = firstNumbers.joinToString("、")
+                labelAdditional.text = additionalNumbers.joinToString("、")
+                labelDate.text =
+                    String.format("自%s至%s止", date.dateFrom.format(formatter), date.dateTo.format(formatter))
+            }
+        } catch (e: IndexOutOfBoundsException) {
+            Main.logger.log(Level.WARNING, "Invoice information size = ${invoice.size}, selecting index = $index")
         }
     }
 
@@ -145,6 +160,7 @@ class MainController {
 
     @FXML
     fun onInvoice() {
+        Main.logger.log(Level.INFO, "Invoice number selected. Index = ${listInvoice.selectionModel.selectedIndex}")
         applyInvoiceNumber(listInvoice.selectionModel.selectedIndex)
     }
 
@@ -152,27 +168,18 @@ class MainController {
     fun onInput() {
         val number = txtInput.text
 
-        val errorMessage = when {
-            number.any { it !in "0123456789" } -> InputErrorMessage(title = "輸入格式錯誤", description = "您輸入的格式不正確！")
-            number.length !in arrayOf(3, 8) -> InputErrorMessage(title = "輸入長度錯誤", description = "您輸入的長度不正確！")
-            else -> null
-        }
+        Main.logger.log(Level.INFO, "Process input: \"$number\"")
 
-        if (errorMessage != null) {
-            Alert(Alert.AlertType.ERROR).apply {
-                headerText = errorMessage.title
-                dialogPane.content = Label(
-                    "${errorMessage.description}\n" +
-                        "請輸入發票末三碼或完整號碼。"
-                )
-                showAndWait()
+        try {
+            when {
+                number.any { it !in "0123456789" } -> throw IllegalCharacterException(number)
+                number.length !in arrayOf(3, 8) -> throw  InvalidLengthException(number.length)
             }
-            txtInput.selectAll()
-            return
-        } else {
+
             val invoice = invoice[listInvoice.selectionModel.selectedIndex]
             val result = invoice.compare(number)
 
+            Main.logger.log(Level.INFO, "Result: ${result.text}")
 
             when (result) {
                 InvoiceResult.INVOICE_RESULT_PERHAPS -> {
@@ -192,7 +199,6 @@ class MainController {
                 else -> {
                     Alert(Alert.AlertType.INFORMATION).apply {
                         val margin = Insets(8.0)
-
 
                         headerText = result.text
                         dialogPane.content = VBox(
@@ -214,11 +220,34 @@ class MainController {
             }
 
             results.add(InvoiceInputResult(number = number, invoiceTitle = invoice.title, invoiceResult = result))
-        }
 
-        txtInput.text = ""
+            txtInput.text = ""
+        } catch (e: InvalidInputException) {
+            Alert(Alert.AlertType.ERROR).apply {
+                headerText = e.title
+                dialogPane.content = Label(
+                    "${e.description}\n" +
+                        "請輸入發票末三碼或完整號碼。"
+                )
+                showAndWait()
+            }
+            txtInput.selectAll()
+        }
     }
 }
 
-//System.getProperty("os.name")
-private data class InputErrorMessage(val title: String, val description: String)
+private abstract class InvalidInputException(msg: String) : IllegalArgumentException(msg) {
+    abstract val title: String
+    abstract val description: String
+}
+
+private class IllegalCharacterException(input: String) : InvalidInputException("For input string: \"$input\"") {
+    override val title get() = "輸入格式錯誤"
+    override val description get() = "您輸入的格式不正確！"
+
+}
+
+private class InvalidLengthException(length: Int) : InvalidInputException("Expecting 3 or 8, actual is $length") {
+    override val title get() = "輸入長度錯誤"
+    override val description get() = "您輸入的長度不正確！"
+}

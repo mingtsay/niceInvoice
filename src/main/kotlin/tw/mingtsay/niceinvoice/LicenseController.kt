@@ -31,11 +31,11 @@ class LicenseController {
         licenses?.also { licenses ->
             licenses.licenses.forEach { license ->
                 listLicense.items.add(license.name)
-                licenseStrings.add(license.licenses.map { filename ->
+                licenseStrings.add(license.licenses.joinToString("\n") { filename ->
                     licenseContents[filename] ?: javaClass.getResource(filename)
                         .let { url -> IOUtils.toString(url, "UTF-8") }
                         .also { licenseContent -> licenseContents[filename] = licenseContent }
-                }.joinToString("\n"))
+                })
             }
         }
 

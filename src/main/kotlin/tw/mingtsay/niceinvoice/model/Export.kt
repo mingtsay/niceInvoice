@@ -21,7 +21,7 @@ data class Export(
                 null
             } ?: Export()
 
-        fun writeAll(export: Export, file: File) {
+        private fun writeAll(export: Export, file: File) {
             try {
                 Main.logger.log(Level.INFO, "Exporting to: \"${file.name}\"")
                 FileUtils.write(file, Klaxon().toJsonString(export), "UTF-8")

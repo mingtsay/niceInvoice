@@ -6,7 +6,7 @@
 <?import javafx.scene.Scene?>
 <?import javafx.stage.Stage?>
 <Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
-       fx:controller="tw.mingtsay.niceinvoice.MainController" fx:id="_stage"
+       fx:controller="tw.mingtsay.niceinvoice.MainController" fx:id="thisStage"
        width="800" height="600" title="從來沒這麼輕鬆對發票過">
     <scene>
         <Scene stylesheets="@/fonts/font-face.css">
@@ -48,11 +48,16 @@
                             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                         </HBox.margin>
                         <HBox>
-                            <ComboBox fx:id="listInvoice" onAction="#onInvoice">
+                            <ComboBox fx:id="listInvoice" onAction="#onInvoice" maxWidth="Infinity" HBox.hgrow="ALWAYS">
                                 <HBox.margin>
                                     <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                                 </HBox.margin>
                             </ComboBox>
+                            <Button onAction="#onInvoiceEdit" text="編輯…">
+                                <HBox.margin>
+                                    <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                                </HBox.margin>
+                            </Button>
                         </HBox>
                         <GridPane hgap="8.0" vgap="8.0">
                             <columnConstraints>

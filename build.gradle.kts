@@ -19,7 +19,7 @@ dependencies {
     implementation("commons-io", "commons-io", "2.6")
     implementation("com.squareup.okhttp3", "okhttp", "3.12.0")
     implementation("com.beust", "klaxon", "3.0.1")
-    testImplementation("junit", "junit", "4.12")
+    testImplementation("org.junit.jupiter", "junit-jupiter-engine", "5.3.2")
 }
 
 configure<JavaPluginConvention> {
@@ -27,4 +27,8 @@ configure<JavaPluginConvention> {
 }
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

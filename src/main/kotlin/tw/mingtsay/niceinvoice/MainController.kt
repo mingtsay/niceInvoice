@@ -12,11 +12,9 @@ import javafx.stage.FileChooser
 import javafx.stage.Modality
 import javafx.stage.Stage
 import tw.mingtsay.niceinvoice.model.*
-import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Level
-import kotlin.math.exp
 import kotlin.math.min
 
 class MainController {
@@ -27,7 +25,7 @@ class MainController {
     private var results = FXCollections.observableArrayList<InvoiceInputResult>()
 
     @FXML
-    lateinit var _stage: Stage
+    lateinit var thisStage: Stage
 
     @FXML
     lateinit var menuBar: MenuBar
@@ -74,15 +72,12 @@ class MainController {
 
         menuBar.isUseSystemMenuBar = true
 
-        selectedIndex = Main.state.selectedIndex
-        invoice = Main.state.invoice.toMutableList()
-        results = FXCollections.observableArrayList(Main.state.results)
+        loadState()
 
         tableColumnNumber.setCellValueFactory { it.value.numberProperty }
         tableColumnDate.setCellValueFactory { it.value.invoiceTitleProperty }
         tableColumnResult.setCellValueFactory { it.value.invoiceResultProperty }
         tableColumnPrice.setCellValueFactory { it.value.invoicePriceProperty }
-        tableResults.items = results
 
         initializeInvoice()
 
@@ -92,11 +87,26 @@ class MainController {
     fun shutdown() {
         Main.logger.log(Level.INFO, "Shutting down…")
 
+        saveState()
+    }
+
+    private fun loadState() {
+        Main.logger.log(Level.INFO, "Loading state…")
+        selectedIndex = Main.state.selectedIndex
+        invoice = Main.state.invoice.toMutableList()
+        results = FXCollections.observableArrayList(Main.state.results)
+        tableResults.items = results
+        Main.logger.log(Level.INFO, "State loaded.")
+    }
+
+    private fun saveState() {
+        Main.logger.log(Level.INFO, "Saving state…")
         Main.state = State(
             selectedIndex = listInvoice.selectionModel.selectedIndex,
             invoice = invoice,
             results = results
         )
+        Main.logger.log(Level.INFO, "State saved.")
     }
 
     companion object {
@@ -112,7 +122,11 @@ class MainController {
     }
 
     private fun initializeInvoice() {
-        if (invoice.isEmpty()) {
+        if (invoice.isEmpty() && Alert(Alert.AlertType.CONFIRMATION)
+                .apply { headerText = "是否下載發票資訊？" }
+                .apply { contentText = "您尚未有發票資訊，是否連線至伺服器抓取最新的發票資訊？" }
+                .run { showAndWait().get() == ButtonType.OK }
+        ) {
             Main.logger.log(Level.INFO, "No invoice information found. Download from server.")
             InvoiceNumber.fetch()
                 ?.apply { invoice = toMutableList() }
@@ -122,13 +136,12 @@ class MainController {
                     headerText = "發票開獎資訊下載失敗"
                     dialogPane.content = Label("無法取得發票開獎資訊，請檢查您的網際網路連線。")
                     showAndWait()
-                    Platform.exit()
                 }
         }
 
         if (!invoice.isEmpty()) {
             listInvoice.apply {
-                listInvoice.items.clear()
+                items.clear()
                 invoice.forEach { items.add(it.title) }
                 selectedIndex = min(selectedIndex, listInvoice.items.size - 1)
                 selectionModel.select(selectedIndex)
@@ -159,14 +172,14 @@ class MainController {
             .also { it.title = title }
             .apply { extensionFilters.add(FileChooser.ExtensionFilter("JSON 檔案 (*.json)", "*.json")) }
             .apply { extensionFilters.add(FileChooser.ExtensionFilter("所有檔案 (*.*)", "*.*")) }
-            .run { showOpenDialog(_stage) }
+            .run { showOpenDialog(thisStage) }
 
     private fun saveFile(title: String) =
         FileChooser()
             .also { it.title = title }
             .apply { extensionFilters.add(FileChooser.ExtensionFilter("JSON 檔案 (*.json)", "*.json")) }
             .apply { initialFileName = "niceInvoice-export.json" }
-            .run { showSaveDialog(_stage) }
+            .run { showSaveDialog(thisStage) }
             .let { if (!it.exists() || confirmOverwrite()) it else null }
 
     private fun confirmOverwrite() =
@@ -248,6 +261,14 @@ class MainController {
     fun onInvoice() {
         Main.logger.log(Level.INFO, "Invoice number selected. Index = ${listInvoice.selectionModel.selectedIndex}")
         applyInvoiceNumber(listInvoice.selectionModel.selectedIndex)
+    }
+
+    @FXML
+    fun onInvoiceEdit() {
+        saveState()
+        InvoiceController.stage.showAndWait()
+        loadState()
+        initializeInvoice()
     }
 
     @FXML

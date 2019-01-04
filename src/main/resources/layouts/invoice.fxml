@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Scene?>
+<?import javafx.stage.Stage?>
+<Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
+       fx:controller="tw.mingtsay.niceinvoice.InvoiceController" fx:id="thisStage"
+       width="600" height="400" title="編輯發票資訊">
+    <scene>
+        <Scene stylesheets="@/fonts/font-face.css">
+            <SplitPane dividerPositions="0.25">
+                <VBox>
+                    <ListView fx:id="listInvoice" VBox.vgrow="ALWAYS"/>
+                    <HBox>
+                        <Button fx:id="btnFetch" onAction="#onFetch" text="下載" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnDelete" disable="true" onAction="#onDelete" text="刪除" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Button>
+                    </HBox>
+                </VBox>
+                <VBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="期別">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtTitle" styleClass="font-monospace"
+                                   HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="特別獎">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtSuper" styleClass="font-monospace"
+                                   HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="特獎">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtSpecial" styleClass="font-monospace"
+                                   HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="頭獎">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtFirst" styleClass="font-monospace"
+                                   HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="增開六獎">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtAdditional" styleClass="font-monospace"
+                                   HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </HBox>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="領獎期限">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <DatePicker fx:id="datePickerFrom" onAction="#onInvoiceChanged" maxWidth="Infinity"
+                                    HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </DatePicker>
+                        <DatePicker fx:id="datePickerTo" onAction="#onInvoiceChanged" maxWidth="Infinity"
+                                    HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </DatePicker>
+                    </HBox>
+                    <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+                        <Button onAction="#onClose" text="關閉">
+                            <HBox.margin>
+                                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
+                            </HBox.margin>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </SplitPane>
+        </Scene>
+    </scene>
+</Stage>

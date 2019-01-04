@@ -12,6 +12,7 @@ import javafx.stage.FileChooser
 import javafx.stage.Modality
 import javafx.stage.Stage
 import tw.mingtsay.niceinvoice.model.*
+import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Level
@@ -166,6 +167,13 @@ class MainController {
             .apply { extensionFilters.add(FileChooser.ExtensionFilter("JSON 檔案 (*.json)", "*.json")) }
             .apply { initialFileName = "niceInvoice-export.json" }
             .run { showSaveDialog(_stage) }
+            .let { if (!it.exists() || confirmOverwrite()) it else null }
+
+    private fun confirmOverwrite() =
+        Alert(Alert.AlertType.CONFIRMATION)
+            .apply { headerText = "是否取代檔案？" }
+            .apply { contentText = "檔案已存在，是否覆蓋？" }
+            .run { showAndWait().get() == ButtonType.OK }
 
     private fun confirmReplacement(what: String) =
         Alert(Alert.AlertType.CONFIRMATION)
@@ -185,14 +193,14 @@ class MainController {
     @FXML
     fun onMenuItemActionImport() {
         val export = Export.read(openFile("匯入…"))
-        export?.invoice?.apply {
+        export.invoice?.apply {
             val replace = invoice.isEmpty() || confirmReplacement("發票資訊")
             if (replace) invoice = toMutableList()
             else invoice.addAll(this)
             initializeInvoice()
         }
 
-        export?.results?.apply {
+        export.results?.apply {
             val replace = results.isEmpty() || confirmReplacement("對獎結果")
             if (replace) results.clear()
             results.addAll(this)
@@ -203,26 +211,26 @@ class MainController {
 
     @FXML
     fun onMenuItemActionExportInvoice() {
-        val file = saveFile("匯出發票資訊…")
-        Export.writeInvoice(file = file, invoice = invoice)
-
-        importExportDone(what = "發票資訊", isImport = false)
+        saveFile("匯出發票資訊…")?.also { file ->
+            Export.writeInvoice(file = file, invoice = invoice)
+            importExportDone(what = "發票資訊", isImport = false)
+        }
     }
 
     @FXML
     fun onMenuItemActionExportResults() {
-        val file = saveFile("匯出對獎結果…")
-        Export.writeResults(file = file, results = results)
-
-        importExportDone(what = "對獎結果", isImport = false)
+        saveFile("匯出對獎結果…")?.also { file ->
+            Export.writeResults(file = file, results = results)
+            importExportDone(what = "對獎結果", isImport = false)
+        }
     }
 
     @FXML
     fun onMenuItemActionExportAll() {
-        val file = saveFile("匯出全部…")
-        Export.writeAll(file = file, invoice = invoice, results = results)
-
-        importExportDone(what = "資料", isImport = false)
+        saveFile("匯出全部…")?.also { file ->
+            Export.writeAll(file = file, invoice = invoice, results = results)
+            importExportDone(what = "資料", isImport = false)
+        }
     }
 
 

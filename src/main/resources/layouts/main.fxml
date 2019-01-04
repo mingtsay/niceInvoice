@@ -7,7 +7,7 @@
 <?import javafx.stage.Stage?>
 <Stage xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.191"
        fx:controller="tw.mingtsay.niceinvoice.MainController"
-       width="1280" height="960" title="從來沒這麼輕鬆對發票過">
+       width="800" height="600" title="從來沒這麼輕鬆對發票過">
     <scene>
         <Scene stylesheets="@/fonts/font-face.css">
             <VBox>
@@ -103,7 +103,7 @@
                                    GridPane.columnIndex="1" GridPane.rowIndex="9"/>
                         </GridPane>
                     </VBox>
-                    <VBox>
+                    <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                         <HBox.margin>
                             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                         </HBox.margin>
@@ -120,22 +120,21 @@
                                 </HBox.margin>
                             </Button>
                         </HBox>
-                    </VBox>
-                    <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                         <HBox.margin>
                             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                         </HBox.margin>
-                        <TableView VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tableResults" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn text="發票號碼"/>
-                                <TableColumn text="發票期別"/>
-                                <TableColumn text="對獎結果"/>
+                                <TableColumn fx:id="tableColumnNumber" text="發票號碼"/>
+                                <TableColumn fx:id="tableColumnDate" text="發票期別"/>
+                                <TableColumn fx:id="tableColumnResult" text="對獎結果"/>
+                                <TableColumn fx:id="tableColumnPrice" text="得獎獎金"/>
                             </columns>
                             <VBox.margin>
                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                             </VBox.margin>
                         </TableView>
-                        <Label text="Copyright © 2018 Ming Tsay. All rights reserved." textAlignment="RIGHT">
+                        <Label text="Copyright © 2018-2019 Ming Tsay. All rights reserved." textAlignment="RIGHT">
                             <VBox.margin>
                                 <Insets bottom="4.0" left="4.0" right="4.0" top="4.0"/>
                             </VBox.margin>
